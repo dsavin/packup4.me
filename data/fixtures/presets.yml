@@ -1,0 +1,7 @@
+Preset:
+  preset1:
+    name: "Парк"
+    Items: [item10, item2, item1]
+  preset2:
+    name: "Лес"
+    Items: [item1, item2, item5, item7, item8, item10]

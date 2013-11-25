@@ -1,0 +1,21 @@
+Item:
+  item1:
+    name: "Чашка"
+  item2:
+    name: "Нож"
+  item3:
+    name: "Спальник"
+  item4:
+    name: "Горелка"
+  item5:
+    name: "Зажигалка"
+  item6:
+    name: "Спички"
+  item7:
+    name: "Бутылка воды"
+  item8:
+    name: "Дождевик"
+  item9:
+    name: "Фонарик"
+  item10:
+    name: "Термос"

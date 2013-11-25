@@ -1,4 +1,5 @@
 Bag:
+  actAs: { Timestampable: ~ }
   columns:
     hash: { type:  string(9), notnull: true, unique: true }
     description: string(255)
