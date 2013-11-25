@@ -1,0 +1,82 @@
+Bag:
+  columns:
+    hash: { type:  string(9), notnull: true, unique: true }
+    description: string(255)
+    preset_id: integer
+  relations:
+    Preset:
+      local: preset_id
+      foreign: id
+      type: one
+      foreignType: many
+      foreignAlias: Bags
+    Items:
+      class: Item
+      foreignAlias: Bags
+      refClass: BagItem
+      local: bag_id
+      foreign: item_id
+
+Preset:
+  columns:
+    name: string(255)
+  relations:
+    Items:
+      class: Item
+      foreignAlias: Presets
+      refClass: PresetItem
+      local: preset_id
+      foreign: item_id
+
+Item:
+  columns:
+    name: string(255)
+  relations:
+    Bags:
+      class: Bag
+      foreignAlias: Items
+      refClass: BagItem
+      local: item_id
+      foreign: bag_id
+    Presets:
+      class: Preset
+      foreignAlias: Items
+      refClass: PresetItem
+      local: item_id
+      foreign: preset_id
+
+BagItem:
+  columns:
+    bag_id:
+      type: integer
+      primary: true
+    item_id:
+      type: integer
+      primary: true
+  relations:
+    Bag:
+      local: bag_id
+      foreign: id
+      foreignAlias: BagItems
+    Item:
+      local: item_id
+      foreign: id
+      foreignAlias: ItemBags
+
+PresetItem:
+  columns:
+    preset_id:
+      type: integer
+      primary: true
+    item_id:
+      type: integer
+      primary: true
+  relations:
+    Preset:
+      local: preset_id
+      foreign: id
+      foreignAlias: PresetItems
+    Item:
+      local: item_id
+      foreign: id
+      foreignAlias: ItemPresets
