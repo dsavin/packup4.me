@@ -1,1 +1,12 @@
-<?php echo $bag->getHash(); ?>
+<h1>Рюкзачек</h1>
+<h2>С какой целью собирается?</h2>
+<?php echo $bag->getDescription(); ?>
+<h2>В нем уже есть:</h2>
+<ul>
+<?php foreach($bag->getItems() as $i => $item): ?>
+    <li>
+
+        <?php echo $item->getName(); ?>
+    </li>
+<?php endforeach; ?>
+</ul>

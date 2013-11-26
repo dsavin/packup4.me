@@ -18,7 +18,10 @@ class Bag extends BaseBag
         if (!$this->getHash())
         {
             $this->setHash(substr(sha1(time().rand(11111, 99999)), 0, 5));
+            $this->setItems($this->getPreset()->getItems());
         }
+
+
 
         return parent::save($conn);
     }
