@@ -10,3 +10,12 @@
     </li>
 <?php endforeach; ?>
 </ul>
+<h2>В нем уже есть2:</h2>
+<ul>
+    <?php foreach($free_items as $i => $item): ?>
+        <li>
+
+            <?php echo $item->getName(); ?>
+        </li>
+    <?php endforeach; ?>
+</ul>

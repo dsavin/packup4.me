@@ -30,6 +30,12 @@ class defaultActions extends sfActions
     {
         $this->bag = Doctrine::getTable('Bag')->findOneBy('hash', $request->getParameter('hash'));
         $this->forward404Unless($this->bag);
+        $this->free_items = Doctrine_Query::create()
+            ->from('Item i')
+            ->leftJoin('i.Bags b')
+            ->where('b.id = ?', $this->bag->getId())
+            ->execute();
+
     }
 
 
