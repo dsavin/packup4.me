@@ -28,12 +28,12 @@ class defaultActions extends sfActions
 
     public function executeBag(sfWebRequest $request)
     {
-        $this->bag = Doctrine::getTable('Bag')->findOneBy('hash', $request->getParameter('hash'));
+        $this->bag = Doctrine::getTable('Bag')->findOneByHash($request->getParameter('hash'));
+
         $this->forward404Unless($this->bag);
         $this->free_items = Doctrine_Query::create()
             ->from('Item i')
-            ->leftJoin('i.Bags b')
-            ->where('b.id = ?', $this->bag->getId())
+            ->where('i.id NOT IN (SELECT BagItem.item_id FROM BagItem WHERE BagItem.bag_id = ?)', $this->bag->getId())
             ->execute();
 
     }
@@ -48,13 +48,34 @@ class defaultActions extends sfActions
 
         if ($form->isValid())
         {
+
             $bag = $form->save();
+
+            if($bag->getPreset()):
+
+                $bagItemsCollection = new Doctrine_Collection('Item');
+
+                $presetCollection  = $bag->getPreset()->getItems();
+
+                foreach ($presetCollection as $i => $item) {
+                    $bagItemsCollection->add($item);
+                }
+
+                $bag
+                    ->setItems($bagItemsCollection)
+                    ->setPreset(null)
+                    ->save();
+            endif;
 
             $this->getRequest()->setParameter('hash',$bag->getHash());
 
             $this->forward('default','bag');
 
         }
+    }
+
+    public function executeError404(){
+
     }
 
 

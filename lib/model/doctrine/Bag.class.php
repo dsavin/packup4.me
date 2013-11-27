@@ -14,15 +14,26 @@ class Bag extends BaseBag
 {
     public function save(Doctrine_Connection $conn = null)
     {
-
-        if (!$this->getHash())
-        {
-            $this->setHash(substr(sha1(time().rand(11111, 99999)), 0, 5));
-            $this->setItems($this->getPreset()->getItems());
+        if (!$this->_get('hash')) {
+            $this->_set('hash', $this->generateHash());
         }
-
-
-
         return parent::save($conn);
+    }
+
+    /**
+     * generates a Segment unique hash based on mt_rand and base36 encoding
+     * if hash unexpectedly already exists in db, it tries again
+     * @return String
+     */
+    public function generateHash()
+    {
+        // generate random hash, base36 encode
+        $hash = base_convert(mt_rand() . rand(0, 999), 10, 36);
+        // check if unique, this is mostly unecessary
+        $unique = Doctrine_Core::getTable('Bag')->findByHash($hash);
+        // if hash already exists, create again
+        if (count($unique) != 0) $this->generateHash();
+        // we're done.
+        return $hash;
     }
 }
