@@ -28,18 +28,38 @@ class defaultActions extends sfActions
 
     public function executeBag(sfWebRequest $request)
     {
+
+
         $this->bag = Doctrine::getTable('Bag')->findOneByHash($request->getParameter('hash'));
 
+        $this->form = new AddItemsBagForm($this->bag, array('bag_id' => $this->bag->getId()));
+
         $this->forward404Unless($this->bag);
-        $this->free_items = Doctrine_Query::create()
-            ->from('Item i')
-            ->where('i.id NOT IN (SELECT BagItem.item_id FROM BagItem WHERE BagItem.bag_id = ?)', $this->bag->getId())
-            ->execute();
+        $postForm = $request->getParameter($this->form->getName());
+
+        if ($request->isMethod('post') && array_key_exists('items_list', $postForm)){
+            $this->addItemsToBag($request);
+        }
+
+    }
+
+    private function addItemsToBag($request) {
+
+        $formArray = $request->getParameter($this->form->getName());
+
+        $itemsArray = $formArray['items_list'];
+
+        foreach ($itemsArray as $itemId) {
+            $item = Doctrine::getTable('Item')->findOneById(intval($itemId));
+            $this->bag->getItems()->add($item);
+        }
+
+        $this->bag->save();
 
     }
 
 
-    protected function processForm(sfWebRequest $request, sfForm $form)
+    private function processForm(sfWebRequest $request, sfForm $form)
     {
 
         $form->bind(
@@ -73,6 +93,7 @@ class defaultActions extends sfActions
 
         }
     }
+
 
     public function executeError404(){
 
