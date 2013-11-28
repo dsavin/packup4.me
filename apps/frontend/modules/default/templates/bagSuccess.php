@@ -16,10 +16,4 @@
 <?php endforeach; ?>
 </ul>
 <h2>В нем ещё нет:</h2>
-<ul>
-    <?php foreach($free_items as $i => $item): ?>
-        <li>
-            <?php echo $item->getName(); ?>
-        </li>
-    <?php endforeach; ?>
-</ul>
+<?php include_partial('addItemsBagForm', array('form' => $form, 'hash' => $bag->getHash())) ?>
