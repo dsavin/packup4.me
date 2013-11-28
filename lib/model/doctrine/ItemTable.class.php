@@ -16,4 +16,13 @@ class ItemTable extends Doctrine_Table
     {
         return Doctrine_Core::getTable('Item');
     }
+
+    public function getFreeItemsForBag($bagId) {
+        $results = Doctrine_Query::create()
+            ->from('Item i')
+            ->where('i.id NOT IN (SELECT BagItem.item_id FROM BagItem WHERE BagItem.bag_id = ?)', $bagId)
+            ->execute();
+
+        return $results;
+    }
 }
