@@ -3,7 +3,7 @@
     <tfoot>
     <tr>
         <td colspan="2">
-            <input type="submit" value="Упакуйся!" />
+            <input type="submit" class="btn btn-ttc" value="Упакуйся!" />
         </td>
     </tr>
     </tfoot>
