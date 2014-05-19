@@ -41,7 +41,6 @@
 
   <div ng-view></div>
 
-  <!-- <?php echo $sf_content ?> -->
   
 
   <!-- In production use:

@@ -13,6 +13,13 @@ homepage:
   url:   /
   param: { module: default, action: index }
 
+presets: 
+  url: /presets.:sf_format
+  class: sfDoctrineRoute
+  options: { model: Preset, type: list }
+  param:   { module: default, action: presetList, sf_format: json }
+  requirements: { sf_method: get }
+
 # generic rules
 # please, remove them by adding more specific rules
 default_index:

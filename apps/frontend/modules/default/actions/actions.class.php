@@ -10,6 +10,12 @@
  */
 class defaultActions extends sfActions
 {
+    public function preExecute() {
+        $request = $this->getRequest();
+        if($request->getRequestFormat() === 'json')
+            $this->getResponse()->setContentType('application/json');
+    }
+
     /**
      * Executes index action
      *
@@ -26,8 +32,7 @@ class defaultActions extends sfActions
         }
     }
 
-    public function executeBag(sfWebRequest $request)
-    {
+    public function executeBag(sfWebRequest $request) {
 
 
         $this->bag = Doctrine::getTable('Bag')->findOneByHash($request->getParameter('hash'));
@@ -40,7 +45,6 @@ class defaultActions extends sfActions
         if ($request->isMethod('post') && array_key_exists('items_list', $postForm)){
             $this->addItemsToBag($request);
         }
-
     }
 
     private function addItemsToBag($request) {
@@ -95,8 +99,13 @@ class defaultActions extends sfActions
     }
 
 
-    public function executeError404(){
+    public function executeError404() {
 
+    }
+
+    public function executePresetList(sfWebRequest $request) {
+        $this->presets = PresetTable::getInstance()->findAll()->toArray();
+        return $this->renderText(json_encode($this->presets));
     }
 
 
