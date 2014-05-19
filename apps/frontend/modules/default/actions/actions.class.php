@@ -98,6 +98,27 @@ class defaultActions extends sfActions
         }
     }
 
+    public function executeCreateBag(sfWebRequest $request) {
+        //1.create bag
+        //2.return bag items from preset and hash
+        $bag = new Bag();
+        $preset = PresetTable::getInstance()->findOneById($request->getParameter('preset_id'));
+        $bag->setPreset($preset);
+        $bag->save();
+        
+        return $this->renderText(json_encode(Array('hash' => $bag->getHash())));
+    }
+
+    public function executeBagItems(sfWebRequest $request) {
+        $bag = BagTable::getInstance()->findOneByHash($request->getParameter('hash'));
+        if($bag->getIsNew()) {
+            $items = PresetTable::getInstance()->findOneById($bag->getPresetId())->getItems();
+        } else {
+            $items = $bag->getItems();
+        }
+
+        return $this->renderText(json_encode(Array('items' => $items->toArray())));   
+    }
 
     public function executeError404() {
 

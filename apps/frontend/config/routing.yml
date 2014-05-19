@@ -8,6 +8,16 @@ bag_items:
   url: /:hash
   param: { module: default, action: bag }
 
+create_bag: 
+  url: /create_bag/:preset_id.:sf_format
+  param: { module: default, action: createBag }
+  requirements: { sf_method: post }
+
+bag_items:
+  url: /bag_items/:hash.:sf_format
+  param: { module: default, action: bagItems }
+  requirements: { sf_method: get }
+
 # default rules
 homepage:
   url:   /
